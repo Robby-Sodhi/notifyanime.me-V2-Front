@@ -8,6 +8,15 @@
   top: 10vh;
   left: 35vw;
 }
+.welcomeButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4%;
+  margin-left: 7%;
+  width: 250px;
+  position: absolute;
+}
+
 *:focus {
   outline: none !important;
 }
@@ -30,6 +39,12 @@ body {
   grid-gap: 1vw;
   margin-left: 45vw;
   margin-top: 0;
+  margin-top: 2%;
+}
+.centerForm {
+  margin-top: 25vh;
+  margin-left: 15vw;
+  margin-right: 15vw;
 }
 
 .cardImage {
@@ -49,7 +64,7 @@ section {
 .card {
   width: 370px;
   height: 450px;
-  background-color: white;
+  background-color: rgb(243, 243, 243);
   border-radius: 30px;
   flex-direction: column;
   transition: 0.2s;
@@ -114,7 +129,8 @@ body {
   text-align: left;
   color: white;
   align-items: center;
-  padding-left: 5vw;
+  font-size: 20px;
+  margin-bottom: 0;
 }
 
 .App-link {
@@ -152,6 +168,9 @@ body {
   cursor: pointer;
   transition: transform 0.3s ease;
 }
+.Mobilebtn:hover {
+  transform: translateY(-3px);
+}
 .displayBar {
   display: none;
   float: right;
@@ -179,7 +198,7 @@ body {
   width: 35vw;
   left: 3vw;
   top: 6vh;
-  font-size: 30px;
+  font-size: 1vw;
   position: absolute;
   font: Roboto;
 }
@@ -196,9 +215,12 @@ body {
   .imageGrid {
     display: none;
   }
+  .welcomeButtons {
+    position: relative;
+  }
   .titleText {
     font-size: 15px;
-    position: relative;
+    position: absolute;
   }
 }
 @media (min-width: 1200px) {
@@ -211,6 +233,9 @@ body {
   .imageGrid {
     display: none;
   }
+  .welcomeButtons {
+    position: relative;
+  }
 }
 .logo {
   font-family: "Pacifico", cursive;
@@ -218,7 +243,6 @@ body {
   border-radius: 10px;
   margin-left: 5vw;
   margin-top: 2vh;
-  transition: transform 0.3s ease;
   cursor: pointer;
 }
 .logo:active {

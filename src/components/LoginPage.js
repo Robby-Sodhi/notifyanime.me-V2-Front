@@ -8,7 +8,9 @@ export default class LoginPage extends React.Component {
       <div>
         <Header />
         <LoginForm />
-        <BottomBar />
+        <div style={{ marginTop: "42vh" }}>
+          <BottomBar />
+        </div>
       </div>
     );
   }

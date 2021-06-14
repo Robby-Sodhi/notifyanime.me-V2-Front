@@ -15,8 +15,6 @@ export default class Menu extends React.Component {
   component;
   render() {
     let buttons = [
-      { text: "Signup", link: "/Signup" },
-      { text: "Login", link: "/Login" },
       {
         text: "Discord",
         link: "https://www.discord.gg/fwBfvUdMjp",
@@ -37,8 +35,7 @@ export default class Menu extends React.Component {
               <button
                 style={{
                   marginLeft: "20vw",
-                  marginBottom: "1vh",
-                  marginTop: "1vh",
+                  marginTop: "10vh",
                 }}
                 className="Mobilebtn btn--danger--solid btn--large"
               >

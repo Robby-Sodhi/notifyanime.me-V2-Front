@@ -14,39 +14,20 @@ export default class WelcomeScreen extends React.Component {
     return (
       <div>
         <div>
-          <p className="titleText">
-            NotifyAnime.me is a M.A.L integrated anime notifier for you and your
-            anime needs. Signup to always stay up-to-date with the hottest new
-            shows!!
-          </p>
-          <div>
-            <a href="/Signup">
-              <button
-                style={{
-                  marginLeft: "8vw",
-                  marginTop: "25vh",
-                  position: "absolute",
-                }}
-                className="btn btn--danger--solid btn--Xlarge"
-              >
-                Signup
+          <div className="welcomeButtons">
+            <a href="/Login">
+              <button className="Mobilebtn btn--danger--solid btn--large">
+                login
               </button>
             </a>
-            <a href="/Login">
-              <button
-                style={{
-                  marginLeft: "20vw",
-                  marginTop: "25vh",
-                  position: "absolute",
-                }}
-                className="btn btn--danger--solid btn--Xlarge"
-              >
-                Login
+            <a href="/Signup">
+              <button className="Mobilebtn btn--danger--solid btn--large">
+                signup
               </button>
             </a>
           </div>
+          <Slideshow />
         </div>
-        <Slideshow />
         <div className="container">
           {this.renderCard(
             "https://www.notifyanime.me/static/images/boruto.jpg",

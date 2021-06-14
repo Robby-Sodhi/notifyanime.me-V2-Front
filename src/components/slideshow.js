@@ -34,9 +34,11 @@ export default class Slideshow extends React.Component {
     return (
       <div className="imageGrid">
         {this.state.images.map((item, index) => (
-          <a href={item.link} target="_blank">
-            <img key={index} src={item.image} alt="" />
-          </a>
+          <span>
+            <a href={item.link} target="_blank">
+              <img key={index} src={item.image} alt="" />
+            </a>
+          </span>
         ))}
       </div>
     );
