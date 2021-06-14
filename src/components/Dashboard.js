@@ -15,7 +15,13 @@ export default class Dashboard extends React.Component {
     if (!session_key) {
       this.setState({ redirect: "/Home" });
     }
-    fetch(""); //send session key to server through /getWatchList
+    fetch("http://127.0.0.1:8000/getWatchList", {
+      method: "GET",
+      headers: {
+        "Content-Type": "text/plain",
+        "session-key": session_key,
+      },
+    });
   }
 
   render() {
