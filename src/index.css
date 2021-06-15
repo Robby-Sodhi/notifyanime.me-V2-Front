@@ -183,6 +183,9 @@ body {
   margin: 6px 0;
   display: none;
 }
+.center {
+  margin-left: 50vw;
+}
 .menuBar {
   position: absolute;
   margin-top: 1vh;
