@@ -119,19 +119,6 @@ body {
   font-size: calc(10px + 2vmin);
   color: white;
 }
-.footer {
-  position: relative;
-  background-color: #282c34;
-  min-height: 10vh;
-  display: flex;
-  flex-direction: row;
-  font-size: 2vmin;
-  text-align: left;
-  color: white;
-  align-items: center;
-  font-size: 20px;
-  margin-bottom: 0;
-}
 
 .App-link {
   color: #61dafb;
@@ -185,6 +172,11 @@ body {
 }
 .center {
   margin-left: 50vw;
+}
+.centered {
+  position: fixed; /* or absolute */
+  top: 50%;
+  left: 50%;
 }
 .menuBar {
   position: absolute;
