@@ -14,22 +14,9 @@ export default class Menu extends React.Component {
   };
   component;
   render() {
-    let buttons = [
-      {
-        text: "Discord",
-        link: "https://www.discord.gg/fwBfvUdMjp",
-        target: "_blank",
-      },
-      {
-        text: "Donate",
-        link: "https://paypal.me/RncServers?locale.x=en_US",
-        target: "_blank",
-      },
-      { text: "About", link: "/About" },
-    ];
     return (
       <div id="menuBar" className="menuBar">
-        {buttons.map((item) => {
+        {this.props.buttons.map((item) => {
           return (
             <a key={item.text} href={item.link} target={item.target}>
               <button
@@ -38,6 +25,7 @@ export default class Menu extends React.Component {
                   marginTop: "10vh",
                 }}
                 className="Mobilebtn btn--danger--solid btn--large"
+                onClick={item.onClick ? () => item.onClick() : null}
               >
                 {item.text}
               </button>

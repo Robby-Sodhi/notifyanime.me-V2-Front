@@ -1,13 +1,15 @@
 import React from "react";
 import Slideshow from "./slideshow";
+import { getCookieValue, deleteCookieValue } from "./Utility";
 export default class WelcomeScreen extends React.Component {
-  renderCard(image, text, alt = "") {
-    return (
-      <div className="card Flexed">
-        <img className="cardImage" src={image} alt={alt} />
-        <p>{text}</p>
-      </div>
-    );
+  state = {
+    loggedIn: false,
+  };
+
+  componentDidMount() {
+    if (getCookieValue("session-key")) {
+      this.setState({ loggedIn: true });
+    }
   }
 
   render() {
@@ -15,40 +17,29 @@ export default class WelcomeScreen extends React.Component {
       <div>
         <div>
           <div className="welcomeButtons">
-            <a href="/Login">
-              <button className="Mobilebtn btn--danger--solid btn--large">
-                login
-              </button>
-            </a>
-            <a href="/Signup">
-              <button className="Mobilebtn btn--danger--solid btn--large">
-                signup
-              </button>
-            </a>
+            {!this.state.loggedIn && (
+              <a href="/Login">
+                <button className="Mobilebtn btn--danger--solid btn--large">
+                  login
+                </button>
+              </a>
+            )}
+            {!this.state.loggedIn && (
+              <a href="/Signup">
+                <button className="Mobilebtn btn--danger--solid btn--large">
+                  signup
+                </button>
+              </a>
+            )}
+            {this.state.loggedIn && (
+              <a href="/Dashboard">
+                <button className="Mobilebtn btn--danger--solid btn--large">
+                  Dashboard
+                </button>
+              </a>
+            )}
           </div>
           <Slideshow />
-        </div>
-        <div className="container">
-          {this.renderCard(
-            "https://www.notifyanime.me/static/images/boruto.jpg",
-            "Get Notified when your favourite shows air!",
-            "borutoPicture"
-          )}
-          {this.renderCard(
-            "https://www.notifyanime.me/static/images/boruto.jpg",
-            "Get Notified when your favourite shows air!",
-            "borutoPicture"
-          )}
-          {this.renderCard(
-            "https://www.notifyanime.me/static/images/boruto.jpg",
-            "Get Notified when your favourite shows air!",
-            "borutoPicture"
-          )}
-          {this.renderCard(
-            "https://www.notifyanime.me/static/images/boruto.jpg",
-            "Get Notified when your favourite shows air!",
-            "borutoPicture"
-          )}
         </div>
       </div>
     );

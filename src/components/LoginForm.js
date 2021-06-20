@@ -1,12 +1,17 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import { setCookieValue, getCookieValue } from "./Utility";
+import { CircularProgress } from "@material-ui/core";
 function hasWhiteSpace(s) {
   return /\s/g.test(s);
 }
 
 export default class LoginForm extends React.Component {
   componentDidMount() {
-    //log the user out or send them to dashboard if they're logged in
+    if (getCookieValue("session-key")) {
+      console.log("user logged in redirecting to dashboard");
+      this.setState({ redirect: "/Dashboard" });
+    }
   }
 
   Defaultstate = {
@@ -14,13 +19,14 @@ export default class LoginForm extends React.Component {
     password: "",
     error: "",
     redirect: null,
+    loading: false,
   };
   state = { ...this.Defaultstate };
   change = (event) => {
     this.setState({ error: "" });
     this.setState({ [event.target.name]: event.target.value });
   };
-  onSubmit = (event) => {
+  async onSubmit(event) {
     event.preventDefault();
     console.log(this.state);
     if (!this.state.username || !this.state.password) {
@@ -35,7 +41,8 @@ export default class LoginForm extends React.Component {
       username: this.state.username,
       password: this.state.password,
     };
-    fetch("http://127.0.0.1:8000/authenticateUser", {
+    this.setState({ loading: true });
+    await fetch("http://127.0.0.1:8000/authenticateUser", {
       method: "POST",
       headers: {
         "Content-Type": "text/plain",
@@ -46,23 +53,28 @@ export default class LoginForm extends React.Component {
       .then((data) => {
         console.log(data);
         if (data["status"] == false || !data["session-key"]) {
-          throw new Error("Login invalid");
+          this.setState({ error: "login invalid" });
+          return;
         } else {
-          document.cookie = `session-key=${data["session-key"]}; max-age=${
-            86400 * 30
-          };`;
+          setCookieValue("session-key", data["session-key"], 86400 * 30);
+          console.log("succesfully logged user in, redirecting to dashboard");
           this.setState({ redirect: "/Dashboard" });
+          return;
         }
       })
       .catch((error) => {
         console.error(error);
-        alert(error);
+        this.setState({
+          error: "Network Error: server is down or client lost connection",
+        });
       });
-    this.setState({ ...this.Defaultstate });
-  };
+    this.setState({ loading: false });
+  }
   render() {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
+    } else if (this.state.loading) {
+      return <CircularProgress className="centered" />;
     } else {
       return (
         <div className="form-group centerForm">
@@ -94,7 +106,11 @@ export default class LoginForm extends React.Component {
               Submit
             </button>
           </form>
-          <p>{this.state.error}</p>
+          {this.state.error && (
+            <div class="alert alert-danger" role="alert">
+              {this.state.error}
+            </div>
+          )}
         </div>
       );
     }

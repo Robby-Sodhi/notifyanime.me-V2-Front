@@ -2,6 +2,13 @@ import React from "react";
 import Header from "./header";
 import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
+import {
+  client_id,
+  getCookieValue,
+  deleteCookieValue,
+  setCookieValue,
+} from "./Utility";
+
 export default class Dashboard extends React.Component {
   state = {
     redirect: null,
@@ -28,30 +35,28 @@ export default class Dashboard extends React.Component {
       })
       .catch((error) => {
         console.error(error);
-        document.cookie =
-          "session-key=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //delete the cookie
+        deleteCookieValue("session-key");
         this.setState({ redirect: "/Login" });
         return;
       });
   };
-  getCookieValue = (name) =>
-    document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "";
   async componentDidMount() {
     this.setState({ loading: true });
-    let session_key = this.getCookieValue("session-key");
+    let session_key = getCookieValue("session-key");
     console.log(session_key);
     if (!session_key) {
+      console.error("session-key missing from cookie, redirecting to login");
       this.setState({ redirect: "/Login" }); //user not logged in
       return;
     }
 
     let params = new URL(document.location).searchParams;
     if (params.get("code")) {
-      if (this.getCookieValue("code-challenge")) {
+      if (getCookieValue("code-challenge")) {
         await this.SendAuthorizationCodeToServer(
           session_key,
           params.get("code"),
-          this.getCookieValue("code-challenge")
+          getCookieValue("code-challenge")
         );
         window.history.replaceState({}, document.title, "/" + "Dashboard");
       } else {
@@ -78,8 +83,7 @@ export default class Dashboard extends React.Component {
       })
       .catch((error) => {
         console.error(error);
-        document.cookie =
-          "session-key=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //delete the cookie
+        deleteCookieValue("session-key");
         this.setState({ redirect: "/Login" });
         return;
       });
@@ -94,14 +98,11 @@ export default class Dashboard extends React.Component {
         crypto.getRandomValues(new Uint8Array(128))
       ).substr(0, 128);
       if (CodeChallenge.length < 43 || CodeChallenge > 128) {
-        document.cookie =
-          "session-key=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //delete the cookie
+        deleteCookieValue("session-key");
         this.setState({ redirect: "/Home" });
       }
-      document.cookie = `code-challenge=${CodeChallenge}; max-age=3600; path=/;`;
-      // const ClientId = "d5c730cc35fd9cd800d24ae9f7099b58"; //main account Robstersgaming
-      const ClientId = "0ed447cbcf7f21fe2572ce266fc0ce26"; //alt account Robstersgaming75
-      let url = `https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${ClientId}&code_challenge=${CodeChallenge}`;
+      setCookieValue("code-challenge", CodeChallenge, 3600);
+      let url = `https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${client_id}&code_challenge=${CodeChallenge}`;
       console.log(url);
       return (
         <div>
@@ -114,7 +115,12 @@ export default class Dashboard extends React.Component {
         </div>
       );
     } else if (this.state.loading) {
-      return <CircularProgress className="centered" />;
+      return (
+        <div>
+          <Header />
+          <CircularProgress className="centered" />
+        </div>
+      );
     } else {
       return (
         <div>

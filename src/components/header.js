@@ -1,9 +1,17 @@
 import React from "react";
 import Menu from "./menu";
+import { deleteCookieValue, getCookieValue } from "./Utility";
 
 export default class Header2 extends React.Component {
+  componentDidMount() {
+    if (getCookieValue("session-key")) {
+      this.setState({ loggedIn: true });
+    }
+  }
+
   state = {
     menu: false,
+    loggedIn: false,
   };
   render() {
     let buttons = [
@@ -19,6 +27,20 @@ export default class Header2 extends React.Component {
       },
       { text: "About", link: "/About" },
     ];
+    if (this.state.loggedIn) {
+      buttons.push({
+        text: "Logout",
+        onClick: () => {
+          deleteCookieValue("session-key");
+          window.location.reload();
+        },
+      });
+    } else {
+      buttons.push({
+        text: "Login",
+        link: "/Login",
+      });
+    }
     return (
       <header>
         <a href="/">
@@ -35,6 +57,7 @@ export default class Header2 extends React.Component {
                     marginLeft: "1vw",
                   }}
                   className="btn btn--danger--solid btn--medium"
+                  onClick={item.onClick ? () => item.onClick() : null}
                 >
                   {item.text}
                 </button>
@@ -52,7 +75,7 @@ export default class Header2 extends React.Component {
           <div className="menu"></div>
           <div className="menu"></div>
         </button>
-        {this.state.menu ? <Menu /> : ""}
+        {this.state.menu ? <Menu buttons={buttons} /> : ""}
       </header>
     );
   }
