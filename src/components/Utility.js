@@ -49,17 +49,27 @@ export const jstDayWeekToLocal = (theDay, time, offsetH, offsetM) => {
   let dayOfWeek = Calendar[theDay];
   let newHours = (hours - (jst_offset + offsetH)) % 24;
   let newMinutes = (minutes - offsetM) % 60;
-  if (hours - (jst_offset + offsetH) < 0) {
+  while (minutes - offsetM > 60) {
+    hours += 1;
+    minutes -= 60;
+  }
+  while (minutes - offsetM < 0) {
+    hours -= 1;
+    minutes += 60;
+  }
+  while (hours - (jst_offset + offsetH) < 0) {
     dayOfWeek = dayOfWeek - 1;
     if (dayOfWeek < 0) {
       dayOfWeek = 7 + dayOfWeek;
     }
+    hours = hours + 24;
   }
-  if (hours - (jst_offset + offsetH) > 24) {
+  while (hours - (jst_offset + offsetH) > 24) {
     dayOfWeek = dayOfWeek + 1;
     if (dayOfWeek > 6) {
       dayOfWeek = dayOfWeek - 7;
     }
+    hours = hours - 24;
   }
   console.log(dayOfWeek);
   return {
