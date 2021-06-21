@@ -81,6 +81,7 @@ export default class LoginPage extends React.Component {
           error={this.state.error}
           redirect={this.state.redirect}
           loading={this.state.loading}
+          text="Login"
         />
       </div>
     );

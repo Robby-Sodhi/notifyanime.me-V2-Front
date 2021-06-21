@@ -1,6 +1,5 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { setCookieValue, getCookieValue } from "./Utility";
 import { CircularProgress } from "@material-ui/core";
 
 export default class Form extends React.Component {
@@ -17,6 +16,7 @@ export default class Form extends React.Component {
       return (
         <div className="form-group centerForm">
           <form>
+            <p style={{ fontWeight: 600 }}>{this.props.text}</p>
             <label for="username">username</label>
             <input
               className="form-control"
@@ -44,7 +44,7 @@ export default class Form extends React.Component {
               Submit
             </button>
           </form>
-          {this.props.state.error && (
+          {this.props.error && (
             <div class="alert alert-danger" role="alert">
               {this.props.error}
             </div>
