@@ -215,7 +215,14 @@ export default class Dashboard extends React.Component {
                           element["node"]["broadcast"]["start_time"],
                           offsetH,
                           offsetM
-                        )["day_of_the_week"]}
+                        )["day_of_the_week"] +
+                        " " +
+                        jstDayWeekToLocal(
+                          element["node"]["broadcast"]["day_of_the_week"],
+                          element["node"]["broadcast"]["start_time"],
+                          offsetH,
+                          offsetM
+                        )["start_time"]}
                     </p>
                     <img src={element["node"]["main_picture"]["medium"]} />
                   </div>

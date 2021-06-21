@@ -1,7 +1,7 @@
 export const client_id = "0ed447cbcf7f21fe2572ce266fc0ce26";
 
 export const offsetH = new Date().getTimezoneOffset() / 60;
-export const offsetM = new Date().getTimezoneOffset() % 60;
+export const offsetM = mod(new Date().getTimezoneOffset(), 60);
 
 export const getCookieValue = (name) =>
   document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "";
@@ -42,13 +42,23 @@ export const getTodaysDate = () => DateModuleCalendar[new Date().getDay()];
 
 export const getTodaysDateNum = () => Calendar[getTodaysDate()];
 
+function mod(n, m) {
+  return ((n % m) + m) % m;
+}
+export const pad = (num, size) => {
+  num = num.toString();
+  while (num.length < size) {
+    num = "0" + num;
+  }
+  return num;
+};
 export const jstDayWeekToLocal = (theDay, time, offsetH, offsetM) => {
   const jst_offset = 9;
   let hours = parseInt(time.slice(0, 2));
   let minutes = parseInt(time.slice(3, 5));
   let dayOfWeek = Calendar[theDay];
-  let newHours = (hours - (jst_offset + offsetH)) % 24;
-  let newMinutes = (minutes - offsetM) % 60;
+  let newHours = mod(hours - (jst_offset + offsetH), 24);
+  let newMinutes = mod(minutes - offsetM, 60);
   while (minutes - offsetM > 60) {
     hours += 1;
     minutes -= 60;
@@ -71,9 +81,8 @@ export const jstDayWeekToLocal = (theDay, time, offsetH, offsetM) => {
     }
     hours = hours - 24;
   }
-  console.log(dayOfWeek);
   return {
     day_of_the_week: CalendarFlipped[dayOfWeek],
-    start_time: `${newHours}:${newMinutes}`,
+    start_time: `${pad(newHours, 2)}:${pad(newMinutes, 2)}`,
   };
 };
