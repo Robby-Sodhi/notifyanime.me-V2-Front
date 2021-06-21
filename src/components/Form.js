@@ -16,7 +16,6 @@ export default class Form extends React.Component {
       return (
         <div className="form-group centerForm">
           <form>
-            <p style={{ fontWeight: 600 }}>{this.props.text}</p>
             <label for="username">username</label>
             <input
               className="form-control"
@@ -49,6 +48,7 @@ export default class Form extends React.Component {
               {this.props.error}
             </div>
           )}
+          <div>{this.props.text}</div>
         </div>
       );
     }

@@ -6,6 +6,7 @@ import HomePage from "./components/homePage";
 import LoginPage from "./components/LoginPage";
 import AboutPage from "./components/AboutPage";
 import Dashboard from "./components/Dashboard";
+import SignupPage from "./components/SignupPage";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 class App extends React.Component {
   render() {
@@ -17,6 +18,7 @@ class App extends React.Component {
           <Route path="/Login" exact component={LoginPage} />
           <Route path="/About" exact component={AboutPage} />
           <Route path="/Dashboard" exact component={Dashboard} />
+          <Route path="/Signup" exact component={SignupPage} />
         </Switch>
       </BrowserRouter>
     );

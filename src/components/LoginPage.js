@@ -81,7 +81,11 @@ export default class LoginPage extends React.Component {
           error={this.state.error}
           redirect={this.state.redirect}
           loading={this.state.loading}
-          text="Login"
+          text={
+            <div style={{ fontWeight: 600 }}>
+              Don't have an account? <a href="/Signup">Sign up</a>
+            </div>
+          }
         />
       </div>
     );
