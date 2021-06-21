@@ -45,7 +45,7 @@ export default class LoginForm extends React.Component {
     await fetch("http://127.0.0.1:8000/authenticateUser", {
       method: "POST",
       headers: {
-        "Content-Type": "text/plain",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     })

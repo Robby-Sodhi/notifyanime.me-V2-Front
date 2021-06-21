@@ -7,6 +7,13 @@ import {
   getCookieValue,
   deleteCookieValue,
   setCookieValue,
+  Calendar,
+  getTodaysDate,
+  getTodaysDateNum,
+  CalendarFlipped,
+  jstDayWeekToLocal,
+  offsetH,
+  offsetM,
 } from "./Utility";
 
 export default class Dashboard extends React.Component {
@@ -14,6 +21,7 @@ export default class Dashboard extends React.Component {
     redirect: null,
     loggedInToMal: true,
     loading: false,
+    watchList: null,
   };
   SendAuthorizationCodeToServer = (
     sessionKey,
@@ -24,7 +32,7 @@ export default class Dashboard extends React.Component {
     return fetch("http://127.0.0.1:8000/authenticateMal", {
       method: "POST",
       headers: {
-        "Content-Type": "text/plain",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     })
@@ -79,6 +87,8 @@ export default class Dashboard extends React.Component {
         } else if (!data["WatchList"]) {
           this.setState({ loggedInToMal: false });
           return;
+        } else {
+          this.state.watchList = data["WatchList"];
         }
       })
       .catch((error) => {
@@ -122,12 +132,101 @@ export default class Dashboard extends React.Component {
         </div>
       );
     } else {
-      return (
-        <div>
-          <Header />
-          <div></div>
-        </div>
-      );
+      let watching = [];
+      let completed = [];
+      let planToWatch = [];
+      let currentlyAiring = [];
+      if (this.state.watchList) {
+        let watchList = this.state.watchList["data"];
+        watchList.forEach((element) => {
+          if (element["node"]["my_list_status"]["status"] == "watching") {
+            watching.push(element);
+            if (element["node"]["status"] == "currently_airing") {
+              currentlyAiring.push(element);
+              if (!("broadcast" in element["node"])) {
+                element["node"]["broadcast"] = null;
+              }
+            }
+          } else if (
+            element["node"]["my_list_status"]["status"] == "completed"
+          ) {
+            completed.push(element);
+          } else if (
+            element["node"]["my_list_status"]["status"] == "plan_to_watch"
+          ) {
+            planToWatch.push(element);
+          }
+        });
+        let todayCalendar = { ...Calendar };
+        todayCalendar[getTodaysDate()] = -1;
+        let index = getTodaysDateNum() + 1;
+        let count = 1;
+        for (;;) {
+          if (index > 6) {
+            index = 0;
+          }
+          if (todayCalendar[CalendarFlipped[index]] == -1) {
+            todayCalendar[CalendarFlipped[index]] = 0;
+            break;
+          }
+          todayCalendar[CalendarFlipped[index]] = count;
+          index++;
+          count++;
+        }
+        currentlyAiring.sort((first, second) => {
+          if (
+            todayCalendar[
+              jstDayWeekToLocal(
+                first["node"]["broadcast"]["day_of_the_week"],
+                first["node"]["broadcast"]["start_time"],
+                offsetH,
+                offsetM
+              )["day_of_the_week"]
+            ] <
+            todayCalendar[
+              jstDayWeekToLocal(
+                second["node"]["broadcast"]["day_of_the_week"],
+                second["node"]["broadcast"]["start_time"],
+                offsetH,
+                offsetM
+              )["day_of_the_week"]
+            ]
+          ) {
+            return -1;
+          } else {
+            return 1;
+          }
+        });
+        console.log(currentlyAiring);
+      }
+      if (watching && currentlyAiring) {
+        return (
+          <div>
+            <Header />
+            <div>
+              {currentlyAiring.map((element) => {
+                return (
+                  <div>
+                    <p key={element["node"]["title"]}>
+                      {element["node"]["title"] +
+                        " " +
+                        jstDayWeekToLocal(
+                          element["node"]["broadcast"]["day_of_the_week"],
+                          element["node"]["broadcast"]["start_time"],
+                          offsetH,
+                          offsetM
+                        )["day_of_the_week"]}
+                    </p>
+                    <img src={element["node"]["main_picture"]["medium"]} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      } else {
+        return <p>no airing/watching shows</p>;
+      }
     }
   }
 }
