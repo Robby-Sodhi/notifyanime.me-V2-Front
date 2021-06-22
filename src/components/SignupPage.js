@@ -20,7 +20,7 @@ export default class LoginPage extends React.Component {
   componentDidMount() {
     if (getCookieValue("session-key")) {
       console.log("user logged in redirecting to dashboard");
-      this.state.setState({ redirect: "/Dashboard" });
+      this.setState({ redirect: "/Dashboard" });
     }
   }
   change = (event) => {

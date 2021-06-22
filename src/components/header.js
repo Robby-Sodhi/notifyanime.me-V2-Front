@@ -1,8 +1,8 @@
 import React from "react";
-import Menu from "./menu";
 import { deleteCookieValue, getCookieValue } from "./Utility";
+import { Drawer, List, ListItem, ListItemText } from "@material-ui/core";
 
-export default class Header2 extends React.Component {
+export default class Header extends React.Component {
   componentDidMount() {
     if (getCookieValue("session-key")) {
       this.setState({ loggedIn: true });
@@ -12,6 +12,17 @@ export default class Header2 extends React.Component {
   state = {
     menu: false,
     loggedIn: false,
+  };
+
+  toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    this.setState({ menu: open });
   };
   render() {
     let buttons = [
@@ -51,7 +62,7 @@ export default class Header2 extends React.Component {
         <div className="header">
           {buttons.map((item) => {
             return (
-              <a href={item.link} target={item.target} key={item.link}>
+              <a key={item.text} href={item.link} target={item.target}>
                 <button
                   style={{
                     marginLeft: "1vw",
@@ -64,18 +75,40 @@ export default class Header2 extends React.Component {
               </a>
             );
           })}
+          <button
+            onClick={() => {
+              this.setState({ menu: !this.state.menu });
+            }}
+            style={{ float: "right", marginTop: "1vh", border: "none" }}
+          >
+            <div className="menu"></div>
+            <div className="menu"></div>
+            <div className="menu"></div>
+          </button>
         </div>
-        <button
-          onClick={() => {
-            this.setState({ menu: !this.state.menu });
-          }}
-          style={{ float: "right", marginTop: "1vh", border: "none" }}
+        <Drawer
+          open={this.state.menu}
+          anchor="right"
+          onClose={this.toggleDrawer(false)}
         >
-          <div className="menu"></div>
-          <div className="menu"></div>
-          <div className="menu"></div>
-        </button>
-        {this.state.menu ? <Menu buttons={buttons} /> : ""}
+          <List>
+            {buttons.map((item) => (
+              <a
+                style={{ color: "inherit", textDecoration: "inherit" }}
+                href={item.link}
+                target={item.target}
+              >
+                <ListItem
+                  button
+                  key={item.text}
+                  onClick={item.onClick ? () => item.onClick() : null}
+                >
+                  <ListItemText primary={item.text} />
+                </ListItem>
+              </a>
+            ))}
+          </List>
+        </Drawer>
       </header>
     );
   }

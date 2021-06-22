@@ -158,6 +158,17 @@ body {
 .Mobilebtn:hover {
   transform: translateY(-3px);
 }
+.MuiDrawer-paper {
+  width: 30% !important;
+}
+
+.MobilebtnNoHover {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
 .displayBar {
   display: none;
   float: right;
@@ -177,6 +188,13 @@ body {
   position: fixed; /* or absolute */
   top: 50%;
   left: 50%;
+}
+.center-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }
 .menuBar {
   position: absolute;

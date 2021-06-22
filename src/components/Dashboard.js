@@ -89,7 +89,7 @@ export default class Dashboard extends React.Component {
           this.setState({ loggedInToMal: false });
           return;
         } else {
-          this.state.watchList = data["WatchList"];
+          this.setState({ watchList: data["WatchList"] });
         }
       })
       .catch((error) => {
@@ -119,7 +119,7 @@ export default class Dashboard extends React.Component {
         <div>
           <Header />
           <a href={url}>
-            <button className="btn btn--warning--solid btn--medium center">
+            <button className="MobilebtnNoHover btn--warning--solid btn--medium center-screen">
               Sign-in to MyAnimeList
             </button>
           </a>
@@ -206,8 +206,8 @@ export default class Dashboard extends React.Component {
             <div>
               {currentlyAiring.map((element) => {
                 return (
-                  <div>
-                    <p key={element["node"]["title"]}>
+                  <div key={element["node"]["title"]}>
+                    <p>
                       {element["node"]["title"] +
                         " " +
                         jstDayWeekToOffset(
