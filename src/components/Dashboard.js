@@ -11,9 +11,10 @@ import {
   getTodaysDate,
   getTodaysDateNum,
   CalendarFlipped,
-  jstDayWeekToLocal,
+  jstDayWeekToOffset,
   offsetH,
   offsetM,
+  backendAddress,
 } from "./Utility";
 
 export default class Dashboard extends React.Component {
@@ -29,7 +30,7 @@ export default class Dashboard extends React.Component {
     codeChallenge
   ) => {
     let body = { sessionKey, authorizationCode, codeChallenge };
-    return fetch("http://127.0.0.1:8000/authenticateMal", {
+    return fetch(`${backendAddress}/authenticateMal`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +73,7 @@ export default class Dashboard extends React.Component {
         return;
       }
     }
-    await fetch("http://127.0.0.1:8000/getWatchList", {
+    await fetch(`${backendAddress}/getWatchList`, {
       method: "GET",
       headers: {
         "Content-Type": "text/plain",
@@ -176,7 +177,7 @@ export default class Dashboard extends React.Component {
         currentlyAiring.sort((first, second) => {
           if (
             todayCalendar[
-              jstDayWeekToLocal(
+              jstDayWeekToOffset(
                 first["node"]["broadcast"]["day_of_the_week"],
                 first["node"]["broadcast"]["start_time"],
                 offsetH,
@@ -184,7 +185,7 @@ export default class Dashboard extends React.Component {
               )["day_of_the_week"]
             ] <
             todayCalendar[
-              jstDayWeekToLocal(
+              jstDayWeekToOffset(
                 second["node"]["broadcast"]["day_of_the_week"],
                 second["node"]["broadcast"]["start_time"],
                 offsetH,
@@ -197,7 +198,6 @@ export default class Dashboard extends React.Component {
             return 1;
           }
         });
-        console.log(currentlyAiring);
       }
       if (watching && currentlyAiring) {
         return (
@@ -210,14 +210,14 @@ export default class Dashboard extends React.Component {
                     <p key={element["node"]["title"]}>
                       {element["node"]["title"] +
                         " " +
-                        jstDayWeekToLocal(
+                        jstDayWeekToOffset(
                           element["node"]["broadcast"]["day_of_the_week"],
                           element["node"]["broadcast"]["start_time"],
                           offsetH,
                           offsetM
                         )["day_of_the_week"] +
                         " " +
-                        jstDayWeekToLocal(
+                        jstDayWeekToOffset(
                           element["node"]["broadcast"]["day_of_the_week"],
                           element["node"]["broadcast"]["start_time"],
                           offsetH,

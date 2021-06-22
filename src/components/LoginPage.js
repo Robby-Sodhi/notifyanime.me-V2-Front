@@ -1,7 +1,10 @@
 import React from "react";
 import Header from "./header";
+import { Redirect } from "react-router-dom";
 import Form from "./Form";
 import { setCookieValue, getCookieValue } from "./Utility";
+import { CircularProgress } from "@material-ui/core";
+import { backendAddress } from "./Utility";
 function hasWhiteSpace(s) {
   return /\s/g.test(s);
 }
@@ -14,12 +17,12 @@ export default class LoginPage extends React.Component {
     loading: false,
   };
   state = { ...this.Defaultstate };
-  onMount = () => {
+  componentDidMount() {
     if (getCookieValue("session-key")) {
       console.log("user logged in redirecting to dashboard");
       this.state.setState({ redirect: "/Dashboard" });
     }
-  };
+  }
   change = (event) => {
     this.setState({ error: "" });
     this.setState({ [event.target.name]: event.target.value });
@@ -40,7 +43,7 @@ export default class LoginPage extends React.Component {
       password: this.state.password,
     };
     this.setState({ loading: true });
-    await fetch("http://127.0.0.1:8000/authenticateUser", {
+    await fetch(`${backendAddress}/authenticateUser`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +54,7 @@ export default class LoginPage extends React.Component {
       .then((data) => {
         console.log(data);
         if (data["status"] == false || !data["session-key"]) {
-          this.setState({ error: "login invalid" });
+          this.setState({ error: "Login invalid" });
           return;
         } else {
           setCookieValue("session-key", data["session-key"], 86400 * 30);
@@ -69,25 +72,33 @@ export default class LoginPage extends React.Component {
     this.setState({ loading: false });
   };
   render() {
-    return (
-      <div>
-        <Header />
-        <Form
-          onSubmit={this.onSubmit}
-          change={this.change}
-          onMount={this.onMount}
-          username={this.state.username}
-          password={this.state.password}
-          error={this.state.error}
-          redirect={this.state.redirect}
-          loading={this.state.loading}
-          text={
-            <div style={{ fontWeight: 600 }}>
-              Don't have an account? <a href="/Signup">Sign up</a>
-            </div>
-          }
-        />
-      </div>
-    );
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    } else if (this.state.loading) {
+      return (
+        <div>
+          <Header />
+          <CircularProgress className="centered" />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Header />
+          <Form
+            onSubmit={this.onSubmit}
+            change={this.change}
+            username={this.state.username}
+            password={this.state.password}
+            error={this.state.error}
+            text={
+              <div style={{ fontWeight: 600 }}>
+                Don't have an account? <a href="/Signup">Sign up</a>
+              </div>
+            }
+          />
+        </div>
+      );
+    }
   }
 }

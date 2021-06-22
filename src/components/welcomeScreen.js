@@ -1,6 +1,6 @@
 import React from "react";
 import Slideshow from "./slideshow";
-import { getCookieValue, deleteCookieValue } from "./Utility";
+import { getCookieValue } from "./Utility";
 export default class WelcomeScreen extends React.Component {
   state = {
     loggedIn: false,
