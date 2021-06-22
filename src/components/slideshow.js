@@ -9,8 +9,7 @@ export default class Slideshow extends React.Component {
       },
       {
         image: "https://cdn.myanimelist.net/images/anime/1200/111522.jpg",
-        link:
-          "https://myanimelist.net/anime/43325/Yuukoku_no_Moriarty_2nd_Season",
+        link: "https://myanimelist.net/anime/43325/Yuukoku_no_Moriarty_2nd_Season",
       },
       {
         image: "https://cdn.myanimelist.net/images/anime/1900/110097.webp",
@@ -35,7 +34,7 @@ export default class Slideshow extends React.Component {
       <div className="imageGrid">
         {this.state.images.map((item, index) => (
           <span>
-            <a href={item.link} target="_blank">
+            <a href={item.link} rel="noreferrer" target="_blank">
               <img key={index} src={item.image} alt="" />
             </a>
           </span>
