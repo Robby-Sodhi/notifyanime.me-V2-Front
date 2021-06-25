@@ -1,21 +1,16 @@
 import React from "react";
 import Header from "./header";
 import { Redirect } from "react-router-dom";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Box } from "@material-ui/core";
 import {
   client_id,
   getCookieValue,
   deleteCookieValue,
   setCookieValue,
-  Calendar,
-  getTodaysDate,
-  getTodaysDateNum,
-  CalendarFlipped,
-  jstDayWeekToOffset,
-  offsetH,
-  offsetM,
   backendAddress,
 } from "./Utility";
+
+import { processWatchList } from "./processWatchList";
 
 export default class Dashboard extends React.Component {
   state = {
@@ -67,7 +62,7 @@ export default class Dashboard extends React.Component {
           params.get("code"),
           getCookieValue("code-challenge")
         );
-        window.history.replaceState({}, document.title, "/" + "Dashboard");
+        window.history.replaceState({}, document.title, "/Dashboard");
       } else {
         this.setState({ loggedInToMal: false });
         return;
@@ -82,14 +77,13 @@ export default class Dashboard extends React.Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (!data["sessionKeyValid"]) {
           throw new Error("session key invalid");
         } else if (!data["WatchList"]) {
           this.setState({ loggedInToMal: false });
           return;
         } else {
-          this.setState({ watchList: data["WatchList"] });
+          this.setState({ watchList: processWatchList(data["WatchList"]) });
         }
       })
       .catch((error) => {
@@ -133,101 +127,36 @@ export default class Dashboard extends React.Component {
         </div>
       );
     } else {
-      let watching = [];
-      let completed = [];
-      let planToWatch = [];
-      let currentlyAiring = [];
-      if (this.state.watchList) {
-        let watchList = this.state.watchList["data"];
-        watchList.forEach((element) => {
-          if (element["node"]["my_list_status"]["status"] == "watching") {
-            watching.push(element);
-            if (element["node"]["status"] == "currently_airing") {
-              currentlyAiring.push(element);
-              if (!("broadcast" in element["node"])) {
-                element["node"]["broadcast"] = null;
-              }
-            }
-          } else if (
-            element["node"]["my_list_status"]["status"] == "completed"
-          ) {
-            completed.push(element);
-          } else if (
-            element["node"]["my_list_status"]["status"] == "plan_to_watch"
-          ) {
-            planToWatch.push(element);
-          }
-        });
-        let todayCalendar = { ...Calendar };
-        todayCalendar[getTodaysDate()] = -1;
-        let index = getTodaysDateNum() + 1;
-        let count = 1;
-        for (;;) {
-          if (index > 6) {
-            index = 0;
-          }
-          if (todayCalendar[CalendarFlipped[index]] == -1) {
-            todayCalendar[CalendarFlipped[index]] = 0;
-            break;
-          }
-          todayCalendar[CalendarFlipped[index]] = count;
-          index++;
-          count++;
-        }
-        currentlyAiring.sort((first, second) => {
-          if (
-            todayCalendar[
-              jstDayWeekToOffset(
-                first["node"]["broadcast"]["day_of_the_week"],
-                first["node"]["broadcast"]["start_time"],
-                offsetH,
-                offsetM
-              )["day_of_the_week"]
-            ] <
-            todayCalendar[
-              jstDayWeekToOffset(
-                second["node"]["broadcast"]["day_of_the_week"],
-                second["node"]["broadcast"]["start_time"],
-                offsetH,
-                offsetM
-              )["day_of_the_week"]
-            ]
-          ) {
-            return -1;
-          } else {
-            return 1;
-          }
-        });
-      }
-      if (watching && currentlyAiring) {
+      if (
+        this.state.watchList &&
+        this.state.watchList["currentlyAiring"] &&
+        this.state.watchList["watching"]
+      ) {
+        let currentlyAiring = this.state.watchList["currentlyAiring"];
         return (
           <div>
             <Header />
-            <div>
-              {currentlyAiring.map((element) => {
-                return (
-                  <div key={element["node"]["title"]}>
-                    <p>
-                      {element["node"]["title"] +
-                        " " +
-                        jstDayWeekToOffset(
-                          element["node"]["broadcast"]["day_of_the_week"],
-                          element["node"]["broadcast"]["start_time"],
-                          offsetH,
-                          offsetM
-                        )["day_of_the_week"] +
-                        " " +
-                        jstDayWeekToOffset(
-                          element["node"]["broadcast"]["day_of_the_week"],
-                          element["node"]["broadcast"]["start_time"],
-                          offsetH,
-                          offsetM
-                        )["start_time"]}
-                    </p>
-                    <img src={element["node"]["main_picture"]["medium"]} />
-                  </div>
-                );
-              })}
+            <div style={{ marginLeft: "18%" }}>
+              <Box
+                display="flex"
+                justifyContent="space-evenly"
+                flexWrap="wrap"
+                alignContent="space-between"
+              >
+                {currentlyAiring.map((element) => {
+                  return (
+                    <Box flex="0 0 33.3333%" key={element["node"]["title"]}>
+                      <p>
+                        {`${element["node"]["title"]} ${element["node"]["broadcast"]["day_of_the_week"]} ${element["node"]["broadcast"]["start_time"]}`}
+                      </p>
+                      <img
+                        src={element["node"]["main_picture"]["medium"]}
+                        alt={element["node"]["title"]}
+                      />
+                    </Box>
+                  );
+                })}
+              </Box>
             </div>
           </div>
         );

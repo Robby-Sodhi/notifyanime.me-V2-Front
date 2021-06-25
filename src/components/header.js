@@ -94,13 +94,13 @@ export default class Header extends React.Component {
           <List>
             {buttons.map((item) => (
               <a
+                key={item.text}
                 style={{ color: "inherit", textDecoration: "inherit" }}
                 href={item.link}
                 target={item.target}
               >
                 <ListItem
                   button
-                  key={item.text}
                   onClick={item.onClick ? () => item.onClick() : null}
                 >
                   <ListItemText primary={item.text} />
