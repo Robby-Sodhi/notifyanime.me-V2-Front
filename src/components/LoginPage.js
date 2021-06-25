@@ -57,7 +57,7 @@ export default class LoginPage extends React.Component {
           this.setState({ error: "Login invalid" });
           return;
         } else {
-          setCookieValue("session-key", data["session-key"], 86400 * 30);
+          setCookieValue("session-key", data["session-key"], 86400 * 40);
           console.log("succesfully logged user in, redirecting to dashboard");
           this.setState({ redirect: "/Dashboard" });
           return;
