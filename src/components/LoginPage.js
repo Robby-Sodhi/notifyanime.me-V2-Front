@@ -41,6 +41,7 @@ export default class LoginPage extends React.Component {
     let body = {
       username: this.state.username,
       password: this.state.password,
+      type: "login",
     };
     this.setState({ loading: true });
     await fetch(`${backendAddress}/authenticateUser`, {

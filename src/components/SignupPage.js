@@ -41,9 +41,10 @@ export default class LoginPage extends React.Component {
     let body = {
       username: this.state.username,
       password: this.state.password,
+      type: "signup",
     };
     this.setState({ loading: true });
-    await fetch(`${backendAddress}/signUpUser`, {
+    await fetch(`${backendAddress}/authenticateUser`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
