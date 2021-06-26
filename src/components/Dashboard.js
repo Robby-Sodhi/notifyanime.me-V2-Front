@@ -136,7 +136,7 @@ export default class Dashboard extends React.Component {
         return (
           <div>
             <Header />
-            <div style={{ marginLeft: "18%" }}>
+            <div style={{ marginLeft: "16%" }}>
               <Box
                 display="flex"
                 justifyContent="space-evenly"
