@@ -1,5 +1,5 @@
 export const client_id = "0ed447cbcf7f21fe2572ce266fc0ce26";
-export const backendAddress = "http://99.234.19.2:8000/";
+export const backendAddress = "http://localhost:8000/";
 
 export const offsetH = new Date().getTimezoneOffset() / 60;
 export const offsetM = mod(new Date().getTimezoneOffset(), 60);

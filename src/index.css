@@ -186,6 +186,12 @@ body {
   width: 50%;
   padding: 10px;
 }
+.dashboardText {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 2rem;
+}
 .centered {
   position: fixed; /* or absolute */
   top: 50%;

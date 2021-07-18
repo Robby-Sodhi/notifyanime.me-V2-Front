@@ -136,7 +136,7 @@ export default class Dashboard extends React.Component {
         return (
           <div>
             <Header />
-            <div style={{ marginLeft: "16%" }}>
+            <div style={{ marginLeft: "6%" }}>
               <Box
                 display="flex"
                 justifyContent="space-evenly"
@@ -145,14 +145,22 @@ export default class Dashboard extends React.Component {
               >
                 {currentlyAiring.map((element) => {
                   return (
-                    <Box flex="0 0 33.3333%" key={element["node"]["title"]}>
-                      <p>
-                        {`${element["node"]["title"]} ${element["node"]["broadcast"]["day_of_the_week"]} ${element["node"]["broadcast"]["start_time"]}`}
-                      </p>
+                    <Box
+                      display="flex"
+                      width="500px"
+                      height="300px"
+                      margin="2rem"
+                      key={element["node"]["title"]}
+                    >
                       <img
                         src={element["node"]["main_picture"]["medium"]}
                         alt={element["node"]["title"]}
                       />
+                      <div className="dashboardText">
+                        <p>
+                          {`${element["node"]["title"]} ${element["node"]["broadcast"]["day_of_the_week"]} ${element["node"]["broadcast"]["start_time"]}`}
+                        </p>
+                      </div>
                     </Box>
                   );
                 })}
