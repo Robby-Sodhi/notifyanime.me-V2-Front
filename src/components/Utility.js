@@ -1,6 +1,12 @@
 export const client_id = "0ed447cbcf7f21fe2572ce266fc0ce26";
 export const backendAddress = "http://localhost:8000/";
 
+export const userLoggedIn = () => {
+  if (getCookieValue("session-key")) {
+    return true;
+  }
+  return false;
+};
 export const offsetH = new Date().getTimezoneOffset() / 60;
 export const offsetM = mod(new Date().getTimezoneOffset(), 60);
 

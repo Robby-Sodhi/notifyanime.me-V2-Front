@@ -1,13 +1,13 @@
 import React from "react";
 import Slideshow from "./slideshow";
-import { getCookieValue } from "./Utility";
+import { getCookieValue, userLoggedIn } from "./Utility";
 export default class WelcomeScreen extends React.Component {
   state = {
     loggedIn: false,
   };
 
   componentDidMount() {
-    if (getCookieValue("session-key")) {
+    if (userLoggedIn()) {
       this.setState({ loggedIn: true });
     }
   }

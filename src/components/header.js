@@ -1,10 +1,10 @@
 import React from "react";
-import { deleteCookieValue, getCookieValue } from "./Utility";
+import { deleteCookieValue, getCookieValue, userLoggedIn } from "./Utility";
 import { Drawer, List, ListItem, ListItemText } from "@material-ui/core";
 
 export default class Header extends React.Component {
   componentDidMount() {
-    if (getCookieValue("session-key")) {
+    if (userLoggedIn()) {
       this.setState({ loggedIn: true });
     }
   }

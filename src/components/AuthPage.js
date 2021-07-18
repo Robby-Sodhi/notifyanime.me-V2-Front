@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import Form from "./Form";
 import { setCookieValue, getCookieValue } from "./Utility";
 import { CircularProgress } from "@material-ui/core";
-import { backendAddress } from "./Utility";
+import { backendAddress, userLoggedIn } from "./Utility";
 function hasWhiteSpace(s) {
   return /\s/g.test(s);
 }
@@ -18,7 +18,7 @@ export default class AuthPage extends React.Component {
   };
   state = { ...this.Defaultstate };
   componentDidMount() {
-    if (getCookieValue("session-key")) {
+    if (userLoggedIn()) {
       console.log("user logged in redirecting to dashboard");
       this.setState({ redirect: "/Dashboard" });
     }
