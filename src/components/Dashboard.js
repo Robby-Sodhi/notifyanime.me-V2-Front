@@ -46,6 +46,7 @@ export default class Dashboard extends React.Component {
   };
   async componentDidMount() {
     this.setState({ loading: true });
+    //get userLoggedIn() to work here
     let session_key = getCookieValue("session-key");
     console.log(session_key);
     if (!session_key) {
