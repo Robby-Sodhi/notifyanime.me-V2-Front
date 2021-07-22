@@ -210,11 +210,11 @@ export default class Dashboard extends React.Component {
                           alt={element["node"]["title"]}
                         />
                         <div className="dashboardText">
-                          <h4 style={{ fontSize: "20px" }}>
+                          <p>
                             {`${capitalizeFirstLetter(
                               element["node"]["broadcast"]["day_of_the_week"]
                             )} ${element["node"]["broadcast"]["start_time"]}`}
-                          </h4>
+                          </p>
                           <p>
                             {`
                             Watched: ${element["node"]["my_list_status"]["num_episodes_watched"]}
