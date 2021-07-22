@@ -8,6 +8,7 @@ import {
   deleteCookieValue,
   setCookieValue,
   backendAddress,
+  capitalizeFirstLetter,
 } from "./Utility";
 
 import { processWatchList } from "./processWatchList";
@@ -196,7 +197,7 @@ export default class Dashboard extends React.Component {
               >
                 {this.state.watchList["currentlyAiring"].map((element) => {
                   return (
-                    <div className="leftAlignMobileOnly">
+                    <div className="mobileLeftAlign">
                       <Box
                         display="flex"
                         width="500px"
@@ -209,9 +210,11 @@ export default class Dashboard extends React.Component {
                           alt={element["node"]["title"]}
                         />
                         <div className="dashboardText">
-                          <p>
-                            {`${element["node"]["broadcast"]["day_of_the_week"]} ${element["node"]["broadcast"]["start_time"]}`}
-                          </p>
+                          <h4 style={{ fontSize: "20px" }}>
+                            {`${capitalizeFirstLetter(
+                              element["node"]["broadcast"]["day_of_the_week"]
+                            )} ${element["node"]["broadcast"]["start_time"]}`}
+                          </h4>
                           <p>
                             {`
                             Watched: ${element["node"]["my_list_status"]["num_episodes_watched"]}
@@ -221,8 +224,9 @@ export default class Dashboard extends React.Component {
                             container
                             direction="row"
                             justifyContent="center"
-                            alignItems="flex-start"
+                            alignItems=""
                             spacing={1}
+                            style={{ marginRight: "50px" }}
                           >
                             <Grid item>
                               <button

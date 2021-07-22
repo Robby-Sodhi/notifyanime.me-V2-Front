@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&family=Poppins:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 .responsiveImage {
   position: relative;
   max-width: 100%;
@@ -228,8 +232,8 @@ body {
   font: Roboto;
 }
 @media (max-width: 480px) {
-  .leftAlignMobileOnly {
-    margin-left: 52vw;
+  .mobileLeftAlign {
+    margin-left: 50vw;
   }
   .btn {
     display: none;
