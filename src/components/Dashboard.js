@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./header";
 import { Redirect } from "react-router-dom";
-import { CircularProgress, Box } from "@material-ui/core";
+import { CircularProgress, Box, Grid } from "@material-ui/core";
 import {
   client_id,
   getCookieValue,
@@ -95,6 +95,7 @@ export default class Dashboard extends React.Component {
       });
     this.setState({ loading: false });
   }
+  adjustEpisode = (element) => {};
 
   render() {
     if (this.state.redirect) {
@@ -146,23 +147,52 @@ export default class Dashboard extends React.Component {
               >
                 {currentlyAiring.map((element) => {
                   return (
-                    <Box
-                      display="flex"
-                      width="500px"
-                      height="300px"
-                      margin="2rem"
-                      key={element["node"]["title"]}
-                    >
-                      <img
-                        src={element["node"]["main_picture"]["medium"]}
-                        alt={element["node"]["title"]}
-                      />
-                      <div className="dashboardText">
-                        <p>
-                          {`${element["node"]["title"]} ${element["node"]["broadcast"]["day_of_the_week"]} ${element["node"]["broadcast"]["start_time"]}`}
-                        </p>
-                      </div>
-                    </Box>
+                    <div className="leftAlignMobileOnly">
+                      <Box
+                        display="flex"
+                        width="500px"
+                        height="300px"
+                        margin="2rem"
+                        key={element["node"]["title"]}
+                      >
+                        <img
+                          src={element["node"]["main_picture"]["medium"]}
+                          alt={element["node"]["title"]}
+                        />
+                        <div className="dashboardText">
+                          <p>
+                            {`${element["node"]["broadcast"]["day_of_the_week"]} ${element["node"]["broadcast"]["start_time"]}`}
+                          </p>
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="flex-start"
+                            spacing={1}
+                          >
+                            <Grid item>
+                              <button
+                                onClick={() => this.adjustEpisode(element)}
+                                className="Mobilebtn btn--danger--solid btn--medium"
+                              >
+                                +
+                              </button>
+                            </Grid>
+                            <Grid item>
+                              <button
+                                onClick={() => this.adjustEpisode(element)}
+                                className="Mobilebtn btn--danger--solid btn--medium"
+                              >
+                                -
+                              </button>
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </Box>
+                      <p className="dashboardText">
+                        {element["node"]["title"]}
+                      </p>
+                    </div>
                   );
                 })}
               </Box>

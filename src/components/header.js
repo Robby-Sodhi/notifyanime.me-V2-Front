@@ -95,7 +95,10 @@ export default class Header extends React.Component {
             {buttons.map((item) => (
               <a
                 key={item.text}
-                style={{ color: "inherit", textDecoration: "inherit" }}
+                style={{
+                  color: "inherit",
+                  textDecoration: "inherit",
+                }}
                 href={item.link}
                 target={item.target}
               >

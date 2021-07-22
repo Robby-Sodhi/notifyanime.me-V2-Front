@@ -187,10 +187,13 @@ body {
   padding: 10px;
 }
 .dashboardText {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-left: 2rem;
+  margin: 2rem;
+}
+.dashboardButtonGrid {
+  grid-template-columns: 100px 50px 100px;
+  grid-template-rows: 80px auto 80px;
+  column-gap: 10px;
+  row-gap: 15px;
 }
 .centered {
   position: fixed; /* or absolute */
@@ -225,6 +228,9 @@ body {
   font: Roboto;
 }
 @media (max-width: 480px) {
+  .leftAlignMobileOnly {
+    margin-left: 52vw;
+  }
   .btn {
     display: none;
   }

@@ -1,5 +1,5 @@
 export const client_id = "0ed447cbcf7f21fe2572ce266fc0ce26";
-export const backendAddress = "http://localhost:8000/";
+export const backendAddress = "http://localhost:8000";
 
 export const userLoggedIn = () => {
   if (getCookieValue("session-key")) {
