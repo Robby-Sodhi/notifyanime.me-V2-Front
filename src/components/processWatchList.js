@@ -71,12 +71,12 @@ export const processWatchList = (watchList) => {
       first["node"]["broadcast"]["day_of_the_week"] === null ||
       first["node"]["broadcast"]["start_time"] === null
     ) {
-      return -1;
+      return 1;
     } else if (
       second["node"]["broadcast"]["day_of_the_week"] === null ||
       second["node"]["broadcast"]["start_time"] === null
     ) {
-      return 1;
+      return -1;
     } else if (
       todayCalendar[first["node"]["broadcast"]["day_of_the_week"]] <
       todayCalendar[second["node"]["broadcast"]["day_of_the_week"]]
