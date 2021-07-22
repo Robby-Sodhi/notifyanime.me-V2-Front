@@ -1,5 +1,5 @@
 export const client_id = "0ed447cbcf7f21fe2572ce266fc0ce26";
-export const backendAddress = "http://99.234.19.166:8000/";
+export const backendAddress = "http://99.234.19.166:8000/api";
 
 export function capitalizeFirstLetter(string) {
   if (!string) {
