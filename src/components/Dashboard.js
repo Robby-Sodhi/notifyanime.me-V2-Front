@@ -95,7 +95,57 @@ export default class Dashboard extends React.Component {
       });
     this.setState({ loading: false });
   }
-  adjustEpisode = (element) => {};
+  adjustEpisode = (element, type) => {
+    let numWatched = element["node"]["my_list_status"]["num_episodes_watched"];
+    if (type === "increment") {
+      numWatched++;
+    } else if (type == "decrement") {
+      numWatched--;
+    } else {
+      throw Error("adjustEpisode invalid argument");
+    }
+    if (element["node"]["num_episodes"] != 0) {
+      if (numWatched > element["node"]["num_episodes"]) {
+        alert(`This show only has ${element["node"]["num_episodes"]} episodes`);
+        return;
+      }
+    }
+    if (numWatched < 0) {
+      return;
+    }
+    let body = { numWatched: numWatched, id: element["node"]["id"] };
+    fetch(`${backendAddress}/adjustEpisode`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain",
+        "session-key": getCookieValue("session-key"),
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (!data["status"]) {
+          deleteCookieValue("session-key");
+          this.setState({ redirect: "/Login" });
+          return;
+        }
+      })
+      .catch(() =>
+        alert(
+          "failed to update WatchList, server is down or client lost connection"
+        )
+      );
+    //we assume we can only get currentlyAiring results
+    let temp = { ...this.state.watchList };
+    console.log(temp);
+    for (let show of temp["currentlyAiring"]) {
+      if (show["node"]["id"] == element["node"]["id"]) {
+        show["node"]["my_list_status"]["num_episodes_watched"] = numWatched;
+      }
+    }
+    this.setState({ watchList: temp });
+  };
 
   render() {
     if (this.state.redirect) {
@@ -134,7 +184,6 @@ export default class Dashboard extends React.Component {
         this.state.watchList["currentlyAiring"] &&
         this.state.watchList["watching"]
       ) {
-        let currentlyAiring = this.state.watchList["currentlyAiring"];
         return (
           <div>
             <Header />
@@ -145,7 +194,7 @@ export default class Dashboard extends React.Component {
                 flexWrap="wrap"
                 alignContent="space-between"
               >
-                {currentlyAiring.map((element) => {
+                {this.state.watchList["currentlyAiring"].map((element) => {
                   return (
                     <div className="leftAlignMobileOnly">
                       <Box
@@ -153,7 +202,7 @@ export default class Dashboard extends React.Component {
                         width="500px"
                         height="300px"
                         margin="2rem"
-                        key={element["node"]["title"]}
+                        key={element["node"]["id"]}
                       >
                         <img
                           src={element["node"]["main_picture"]["medium"]}
@@ -162,6 +211,11 @@ export default class Dashboard extends React.Component {
                         <div className="dashboardText">
                           <p>
                             {`${element["node"]["broadcast"]["day_of_the_week"]} ${element["node"]["broadcast"]["start_time"]}`}
+                          </p>
+                          <p>
+                            {`
+                            Watched: ${element["node"]["my_list_status"]["num_episodes_watched"]}
+                            `}
                           </p>
                           <Grid
                             container
@@ -172,7 +226,9 @@ export default class Dashboard extends React.Component {
                           >
                             <Grid item>
                               <button
-                                onClick={() => this.adjustEpisode(element)}
+                                onClick={() =>
+                                  this.adjustEpisode(element, "increment")
+                                }
                                 className="Mobilebtn btn--danger--solid btn--medium"
                               >
                                 +
@@ -180,7 +236,9 @@ export default class Dashboard extends React.Component {
                             </Grid>
                             <Grid item>
                               <button
-                                onClick={() => this.adjustEpisode(element)}
+                                onClick={() =>
+                                  this.adjustEpisode(element, "decrement")
+                                }
                                 className="Mobilebtn btn--danger--solid btn--medium"
                               >
                                 -
