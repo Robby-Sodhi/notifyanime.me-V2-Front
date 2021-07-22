@@ -1,4 +1,4 @@
-export const client_id = "0ed447cbcf7f21fe2572ce266fc0ce26";
+export const client_id = "d5c730cc35fd9cd800d24ae9f7099b58";
 export const backendAddress = "https://www.notifyanime.me/api";
 
 export function capitalizeFirstLetter(string) {
