@@ -43,6 +43,7 @@ export const processWatchList = (watchList) => {
           }
           if (
             !"main_picture" in element["node"] ||
+            element["node"]["main_picture"] == null ||
             !"medium" in element["node"]["main_picture"]
           ) {
             element["node"]["main_picture"] = unkownObject["main_picture"];
