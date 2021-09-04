@@ -45,7 +45,7 @@ export const processWatchList = (watchList) => {
             !"main_picture" in element["node"] ||
             !"medium" in element["node"]["main_picture"]
           ) {
-            element["node"]["main_picture"] = main_picture;
+            element["node"]["main_picture"] = unkownObject["main_picture"];
           }
         }
       } else if (element["node"]["my_list_status"]["status"] === "completed") {
