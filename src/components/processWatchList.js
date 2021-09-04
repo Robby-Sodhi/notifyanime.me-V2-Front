@@ -10,6 +10,7 @@ import {
 
 const unkownObject = {
   broadcast: { start_time: null, day_of_the_week: null },
+  main_picture: { medium: null, large: null },
 };
 export const processWatchList = (watchList) => {
   let watching = [];
@@ -39,6 +40,12 @@ export const processWatchList = (watchList) => {
             );
           } else {
             element["node"]["broadcast"] = unkownObject["broadcast"];
+          }
+          if (
+            !"main_picture" in element["node"] ||
+            !"medium" in element["node"]["main_picture"]
+          ) {
+            element["node"]["main_picture"] = main_picture;
           }
         }
       } else if (element["node"]["my_list_status"]["status"] === "completed") {

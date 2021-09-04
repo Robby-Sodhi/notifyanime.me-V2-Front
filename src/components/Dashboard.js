@@ -164,7 +164,7 @@ export default class Dashboard extends React.Component {
       console.log(url);
       return (
         <div>
-          <Header />
+          <Header />{" "}
           <a href={url}>
             <button className="MobilebtnNoHover btn--warning--solid btn--medium center-screen">
               Sign-in to MyAnimeList
@@ -185,6 +185,7 @@ export default class Dashboard extends React.Component {
         this.state.watchList["currentlyAiring"] &&
         this.state.watchList["watching"]
       ) {
+        console.log(this.state.watchList)
         return (
           <div>
             <Header />
